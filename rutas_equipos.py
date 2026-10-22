@@ -1,34 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from base_datos import conexion_bd
-from pydantic import BaseModel, StringConstraints
-from enum import Enum
-from typing import Annotated
 import sqlite3
+from modelos import CrearEquipo, EquipoRespuesta, MensajeRespuesta, ActualizarEstado
+from servicios_equipos import registrar_equipo, obtener_equipo_servicios, listar_equipos_servicios, eliminar_equipo_servicios, actualizar_estado_servicios
 
 
 router = APIRouter()
-
-TextoNoVacio = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
-
-
-class EstadoEquipo(str, Enum):
-
-    ACTIVO = "activo"
-    MANTENIMIENTO = "en mantenimiento"
-    FUERA_SERVICIO = "fuera de servicio"
-
-
-class ActualizarEstado(BaseModel):
-    
-    estado: EstadoEquipo
-
-
-class CrearEquipo(BaseModel):
-
-    nombre : TextoNoVacio
-    tipo :TextoNoVacio
-    estado : EstadoEquipo
-
 
 
 @router.get("/prueba")
@@ -36,109 +13,63 @@ def probar_router():
     return {"mensaje":"Router funcionando"}
 
 
-@router.get("/equipos")
+@router.get("/equipos", response_model=list[EquipoRespuesta])
 def listar_equipos():
 
-    conexion, cursor = conexion_bd()
+    resultado = listar_equipos_servicios()
 
-    try:
-        cursor.execute("""SELECT id, nombre, tipo, estado FROM equipos""")
-        resultado = cursor.fetchall()
-
-        equipos = []
-
-        for fila in resultado:
-            fila = {"id":fila[0],
-                    "nombre": fila[1],
-                    "tipo": fila[2],
-                    "estado": fila[3]
-                    }
-            equipos.append(fila)
-        
-        return equipos
-
-    finally:
-        conexion.close()
+    return resultado
 
 
 
-@router.get("/equipos/{equipo_id}")
+@router.get("/equipos/{equipo_id}", response_model=EquipoRespuesta)
 def obtener_equipo(equipo_id: int):
 
-    conexion, cursor = conexion_bd()
+    resultado = obtener_equipo_servicios(equipo_id)
 
-    try:
-        cursor.execute("""SELECT id, nombre, tipo, estado FROM equipos WHERE id = ?""", (equipo_id,))
-
-        fila = cursor.fetchone()
-
-        if fila:
-            equipo = {"id":fila[0], "nombre":fila[1], "tipo":fila[2], "estado":fila[3]}
-            return equipo
-        else:
-            raise HTTPException(status_code=404, detail="Equipo no encontrado")
-
-    finally:
-        conexion.close()
+    if not resultado:
+        raise HTTPException(status_code=404, detail="No se encontró el equipo")
+    else:
+        return resultado
 
 
-
-@router.post("/equipos", status_code=201)
+@router.post("/equipos", status_code=201, response_model=EquipoRespuesta)
 def crear_equipos(datos: CrearEquipo):
 
-    conexion, cursor = conexion_bd()
-
-    nombre = datos.nombre
-    tipo = datos.tipo
-    estado = datos.estado.value
-
     try:
-        cursor.execute("""INSERT INTO equipos (nombre, tipo, estado) VALUES (?, ?, ?)""", (nombre, tipo, estado))
+        nombre = datos.nombre
+        tipo = datos.tipo
+        estado = datos.estado.value
 
-        conexion.commit()
+        equipo_creado = registrar_equipo(nombre, tipo, estado)
 
-        equipo_creado = {"id":cursor.lastrowid, "nombre":nombre, "tipo":tipo, "estado":estado}
-        
-        return equipo_creado 
-
+        return equipo_creado
+    
     except sqlite3.Error:
-        conexion.rollback()
-        raise HTTPException(status_code=500, detail="No se pudo registrar el equipo")
-
-    finally:
-        conexion.close()
+        raise HTTPException(status_code=500, detail="Equipo no registrado")
 
 
-@router.delete("/equipos/{equipo_id}")
+
+@router.delete("/equipos/{equipo_id}", response_model=MensajeRespuesta)
 def eliminar_equipo(equipo_id: int):
 
-    conexion, cursor = conexion_bd()
+    resultado = eliminar_equipo_servicios(equipo_id)
 
-    try:
-        cursor.execute("""DELETE FROM equipos WHERE id = ?""",(equipo_id,))
-
-        if cursor.rowcount > 0:
-            conexion.commit()
-            return {"mensaje": "Equipo eliminado correctamente"}
-        else:
-            raise HTTPException(status_code=404, detail="Equipo no encontrado")
-    finally:
-        conexion.close()
+    if resultado:
+        return resultado
+    else:
+        raise HTTPException(status_code=404, detail="Equipo no encontrado")
 
 
 
-@router.patch("/equipos/{equipo_id}")
-def actualizar_estado(equipo_id: int, datos: ActualizarEstado):
+@router.patch("/equipos/{equipo_id}", response_model=MensajeRespuesta)
+def actualizar_estado(equipo_id: int, datos:ActualizarEstado):
 
-    conexion, cursor = conexion_bd()
+    estado = datos.estado.value
+    
+    resultado = actualizar_estado_servicios(equipo_id, estado)
 
-    try:
-        cursor.execute("""UPDATE equipos SET estado = ? WHERE id = ?""",(datos.estado.value, equipo_id))
-
-        if cursor.rowcount > 0:
-            conexion.commit()
-            return {"mensaje": "Estado actualizado correctamente"}
-        else:
-            raise HTTPException(status_code=404, detail="No se encontro equipo")
-    finally:
-        conexion.close()
+    if resultado:
+        return resultado
+    else:
+        raise HTTPException(status_code=404, detail="No se encontro equipo")
