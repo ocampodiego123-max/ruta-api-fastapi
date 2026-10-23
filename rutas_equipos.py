@@ -1,10 +1,17 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header, Depends
 import sqlite3
 from modelos import CrearEquipo, EquipoRespuesta, MensajeRespuesta, ActualizarEstado
 from servicios_equipos import registrar_equipo, obtener_equipo_servicios, listar_equipos_servicios, eliminar_equipo_servicios, actualizar_estado_servicios
+from configuracion import config
 
 
-router = APIRouter()
+def verificar_api_key(x_api_key: str  | None = Header(default=None)):
+
+    if x_api_key is None or config.API_KEY.get_secret_value() != x_api_key:
+        raise HTTPException(status_code=401, detail="API KEY invalida")
+
+
+router = APIRouter(dependencies=[Depends(verificar_api_key)])
 
 
 @router.get("/prueba")
