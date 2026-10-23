@@ -11,9 +11,11 @@ class EstadoEquipo(str, Enum):
     MANTENIMIENTO = "en mantenimiento"
     FUERA_SERVICIO = "fuera de servicio"
 
+
 class ActualizarEstado(BaseModel):
     
     estado: EstadoEquipo
+
 
 class CrearEquipo(BaseModel):
 

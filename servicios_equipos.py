@@ -80,7 +80,7 @@ def eliminar_equipo_servicios(equipo_id):
         return None
     
     except sqlite3.Error:
-        conexion.rollback
+        conexion.rollback()
         raise
     
     finally:

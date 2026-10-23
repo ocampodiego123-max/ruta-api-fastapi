@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException
-from base_datos import conexion_bd
 import sqlite3
 from modelos import CrearEquipo, EquipoRespuesta, MensajeRespuesta, ActualizarEstado
 from servicios_equipos import registrar_equipo, obtener_equipo_servicios, listar_equipos_servicios, eliminar_equipo_servicios, actualizar_estado_servicios
@@ -29,8 +28,7 @@ def obtener_equipo(equipo_id: int):
 
     if not resultado:
         raise HTTPException(status_code=404, detail="No se encontró el equipo")
-    else:
-        return resultado
+    return resultado
 
 
 @router.post("/equipos", status_code=201, response_model=EquipoRespuesta)

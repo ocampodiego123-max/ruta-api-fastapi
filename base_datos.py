@@ -1,16 +1,16 @@
 import sqlite3
 from pathlib import Path
+from configuracion import config
 
 RUTA_BD = Path(__file__).resolve().parent / "equipos.db"
 
 
 def conexion_bd():
 
-    conexion = sqlite3.connect(RUTA_BD)
+    conexion = sqlite3.connect(config.BASE_DATOS)
 
     cursor = conexion.cursor()
 
-    
     return conexion, cursor
 
 
