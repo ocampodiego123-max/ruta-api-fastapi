@@ -1,0 +1,62 @@
+h1 {
+    color: blue;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+}
+
+body{
+    background-color: #f4f6f8;
+    font-family: Arial, sans-serif;
+    margin: 30px;
+}
+
+input{
+    padding: 8px;
+    margin-bottom: 12px;
+}
+
+select{
+    padding: 8px;
+    margin-bottom: 12px;
+}
+
+button{
+    background-color: #2563eb;
+    color: white;
+    padding: 10px;
+    border: none;
+    
+}
+
+button:active {
+  background-color: #2980b9;
+  transform: scale(0.95); 
+}
+
+button:hover{
+    background-color: #1d4ed8;
+}
+
+label{
+    display: block;
+    margin-bottom: 5px;
+}
+
+.formulario-equipo{
+    background-color: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #d1d5db;
+}
+
+section{
+    margin-top: 24px;
+}
+
+.equipo-item {
+    background-color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
