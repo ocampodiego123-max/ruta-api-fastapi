@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Header, Depends
-import sqlite3
+import psycopg
 from modelos import CrearEquipo, EquipoRespuesta, MensajeRespuesta, ActualizarEstado
 from servicios_equipos import registrar_equipo, obtener_equipo_servicios, listar_equipos_servicios, eliminar_equipo_servicios, actualizar_estado_servicios
 from configuracion import config
@@ -13,10 +13,6 @@ def verificar_api_key(x_api_key: str  | None = Header(default=None)):
 
 router = APIRouter(dependencies=[Depends(verificar_api_key)])
 
-
-@router.get("/prueba")
-def probar_router():
-    return {"mensaje":"Router funcionando"}
 
 
 @router.get("/equipos", response_model=list[EquipoRespuesta])
@@ -50,7 +46,7 @@ def crear_equipos(datos: CrearEquipo):
 
         return equipo_creado
     
-    except sqlite3.Error:
+    except psycopg.Error:
         raise HTTPException(status_code=500, detail="Equipo no registrado")
 
 

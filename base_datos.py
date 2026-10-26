@@ -1,13 +1,17 @@
-import sqlite3
-from pathlib import Path
+import psycopg
 from configuracion import config
-
-RUTA_BD = Path(__file__).resolve().parent / "equipos.db"
 
 
 def conexion_bd():
 
-    conexion = sqlite3.connect(config.BASE_DATOS)
+    conexion = psycopg.connect(
+        host=config.DB_HOST,
+        port=config.DB_PORT,
+        dbname=config.DB_NAME,
+        user=config.DB_USER,
+        password=config.DB_PASSWORD.get_secret_value(),
+        sslmode="require"
+    )
 
     cursor = conexion.cursor()
 
@@ -19,13 +23,11 @@ def inicializar_bd():
     conexion, cursor = conexion_bd()
 
     try:
-        cursor.execute ("""CREATE TABLE IF NOT EXISTS equipos (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            nombre TEXT NOT NULL,
-                            tipo TEXT NOT NULL,
-                            estado TEXT NOT NULL)""")
-                        
-        
+        cursor.execute("""CREATE TABLE IF NOT EXISTS equipos (
+                        id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                        nombre VARCHAR(100) NOT NULL,
+                        tipo VARCHAR(50) NOT NULL,
+                        estado VARCHAR(30) NOT NULL)""")
         conexion.commit()
 
     finally:

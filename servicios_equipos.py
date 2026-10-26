@@ -1,5 +1,5 @@
 from base_datos import conexion_bd
-import sqlite3
+import psycopg
 
 
 def registrar_equipo(nombre, tipo, estado):
@@ -7,15 +7,21 @@ def registrar_equipo(nombre, tipo, estado):
     conexion, cursor = conexion_bd()
     
     try:
-        cursor.execute("""INSERT INTO equipos (nombre, tipo, estado) VALUES (?, ?, ?)""", (nombre, tipo, estado))
+        cursor.execute("""INSERT INTO equipos (nombre, tipo, estado) VALUES (%s, %s, %s) RETURNING id""", (nombre, tipo, estado))
+
+        fila = cursor.fetchone()
+        if fila is None:
+            raise RuntimeError("No se pudo obtener el ID del equipo creado")
+
+        nuevo_id = fila[0]
 
         conexion.commit()
 
-        equipo_creado = {"id":cursor.lastrowid, "nombre":nombre, "tipo":tipo, "estado":estado}
+        equipo_creado = {"id":nuevo_id, "nombre":nombre, "tipo":tipo, "estado":estado}
         
         return equipo_creado 
 
-    except sqlite3.Error:
+    except psycopg.Error:
         conexion.rollback()
         raise
 
@@ -28,7 +34,7 @@ def obtener_equipo_servicios(equipo_id):
     conexion, cursor = conexion_bd()
     
     try:
-        cursor.execute("""SELECT id, nombre, tipo, estado FROM equipos WHERE id = ?""", (equipo_id,))
+        cursor.execute("""SELECT id, nombre, tipo, estado FROM equipos WHERE id = %s""", (equipo_id,))
 
         fila = cursor.fetchone()
 
@@ -71,7 +77,7 @@ def eliminar_equipo_servicios(equipo_id):
     conexion, cursor = conexion_bd()
 
     try:
-        cursor.execute("""DELETE FROM equipos WHERE id = ?""",(equipo_id,))
+        cursor.execute("""DELETE FROM equipos WHERE id = %s""",(equipo_id,))
 
         if cursor.rowcount > 0:
             conexion.commit()
@@ -79,7 +85,7 @@ def eliminar_equipo_servicios(equipo_id):
 
         return None
     
-    except sqlite3.Error:
+    except psycopg.Error:
         conexion.rollback()
         raise
     
@@ -92,7 +98,7 @@ def actualizar_estado_servicios(equipo_id, estado):
     conexion, cursor = conexion_bd()
 
     try:
-        cursor.execute("""UPDATE equipos SET estado = ? WHERE id = ?""",(estado, equipo_id))
+        cursor.execute("""UPDATE equipos SET estado = %s WHERE id = %s""",(estado, equipo_id))
 
         if cursor.rowcount > 0:
             conexion.commit()
@@ -100,7 +106,7 @@ def actualizar_estado_servicios(equipo_id, estado):
         
         return None
 
-    except sqlite3.Error:
+    except psycopg.Error:
         conexion.rollback()
         raise
 

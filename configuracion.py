@@ -9,7 +9,11 @@ class Configuracion(BaseSettings):
 
     ENTORNO: Literal["desarrollo","produccion"] = "desarrollo"
     API_KEY: SecretStr = SecretStr("")
-    BASE_DATOS:str = "equipos.db"
+    DB_HOST: str
+    DB_PORT: int
+    DB_NAME: str
+    DB_USER: str
+    DB_PASSWORD: SecretStr = SecretStr("")
 
 
 config = Configuracion()

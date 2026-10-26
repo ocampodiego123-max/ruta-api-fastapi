@@ -21,16 +21,12 @@ app.include_router(router)
 nivel_log = logging.INFO if config.ENTORNO == "desarrollo" else logging.WARNING
 
 logging.basicConfig(level=nivel_log)
-logging.info("API iniciada en modo desarrollo")
 
 @app.exception_handler(Exception)
 async def manejar_error_general(request: Request, exc: Exception):
     logging.exception("Error inesperado en la API")
 
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Error interno del servidor"}
-    )
+    return JSONResponse(status_code=500, content={"detail": "Error interno del servidor"})
 
 
 @app.get("/")
