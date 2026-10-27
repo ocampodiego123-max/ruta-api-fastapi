@@ -24,7 +24,7 @@ app.add_middleware(
     secret_key=config.SESSION_SECRET.get_secret_value(),
     session_cookie="inventario_session",
     max_age=None,
-    same_site="lax",
+    same_site="none",
     https_only=config.ENTORNO == "produccion",
 )
 
