@@ -14,6 +14,9 @@ class Configuracion(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: SecretStr = SecretStr("")
+    ADMIN_USUARIO: str
+    ADMIN_PASSWORD_HASH: SecretStr
+    SESSION_SECRET: SecretStr
 
 
 config = Configuracion()

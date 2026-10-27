@@ -5,6 +5,8 @@ from base_datos import inicializar_bd
 from contextlib import asynccontextmanager
 from configuracion import config
 from starlette.responses import JSONResponse
+from starlette.middleware.sessions import SessionMiddleware
+from autenticacion import router_auth
 
 
 @asynccontextmanager
@@ -15,6 +17,17 @@ async def lifespan(app:FastAPI):
 
 app = FastAPI(lifespan=lifespan, debug=config.ENTORNO == "desarrollo")
 
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=config.SESSION_SECRET.get_secret_value(),
+    session_cookie="inventario_session",
+    max_age=None,
+    same_site="lax",
+    https_only=config.ENTORNO == "produccion",
+)
+
+app.include_router(router_auth)
 app.include_router(router) 
 
 

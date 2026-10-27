@@ -1,42 +1,15 @@
-const campoNombre = document.getElementById("nombre");
-const campoTipo = document.getElementById("tipo");
-const campoEstado = document.getElementById("estado");
-
-const formulario = document.getElementById("formulario-equipo");
-const resultado = document.getElementById("resultado");
-const listaEquipos = document.getElementById("lista-equipos");
+const formularioLogin = document.getElementById("formulario-login");
+const campoUsuario = document.getElementById("usuario");
+const campoContrasena = document.getElementById("contrasena");
+const seccionLogin = document.getElementById("seccion-login");
+const seccionInventario = document.getElementById("seccion-inventario");
 
 
-formulario.addEventListener("submit", function(event){
-    event.preventDefault();
-
-    const nombre = campoNombre.value;
-    const tipo = campoTipo.value;
-    const estado = campoEstado.value;
-
-    resultado.textContent = `Nombre: ${nombre} | Tipo: ${tipo} | Estado: ${estado}`;
+seccionLogin.style.display = "block"
+seccionInventario.style.display = "none"
 
 
-    const equipo = document.createElement("div");
-    equipo.className = "equipo-item";
 
-    const titulo = document.createElement("h3");
-    titulo.textContent = nombre;
-
-    const textoTipo = document.createElement("p");
-    textoTipo.textContent = `Tipo: ${tipo}`;
-
-    const textoEstado = document.createElement("p");
-    textoEstado.textContent = `Estado: ${estado}`;
-
-    equipo.appendChild(titulo);
-    equipo.appendChild(textoTipo);
-    equipo.appendChild(textoEstado);
-
-    listaEquipos.appendChild(equipo);
-
-
-});
 
 
 fetch("https://jsonplaceholder.typicode.com/posts/1")
@@ -85,23 +58,3 @@ function mostrarEquipos(equipos) {
         // 8. Añadir la tarjeta al inventario
         listaEquipos.appendChild(tarjeta);
     });
-}
-
-
-const equiposPrueba = [
-    {
-        id: 1,
-        nombre: "Router Cisco",
-        tipo: "Redes",
-        estado: "activo"
-    },
-    {
-        id: 2,
-        nombre: "Cámara",
-        tipo: "CCTV",
-        estado: "en mantenimiento"
-    }
-];
-
-mostrarEquipos(equiposPrueba);
-

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="stylesheet" href="estilos.css">
     <meta charset="UTF-8">
     <title>Gestión de equipos</title>
 </head>
-<link rel="stylesheet" href="estilos.css">
 
 <body>
     <h1>Gestión de equipos</h1>
@@ -12,6 +12,26 @@
     <button type="button" id="boton-prueba">Probar JavaScript</button>
     <p id="resultado">resultado</p>
 
+
+<div id="seccion-login">
+    
+    <h1>Iniciar Sesion</h1>
+
+    <form id="formulario-login">
+        <label for="usuario">Usuario</label>
+        <input type="text" id="usuario" required>
+
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" required>
+
+        <button type="submit">Iniciar Sesion</button>
+
+        <p id="mensaje-login"></p>
+    </form>
+</div>
+
+
+<div id="seccion-inventario">
 <div class="formulario-equipo">
     <form id="formulario-equipo">
         <label for="nombre">Nombre del equipo:</label>
@@ -23,13 +43,12 @@
         <label for="estado">Estado:</label>
 
         <select id="estado" required>
-        <option value="activo">Activo</option>
-        <option value="en mantenimiento">En mantenimiento</option>
-        <option value="fuera de servicio">Fuera de servicio</option>
-    </select>
+            <option value="activo">Activo</option>
+            <option value="en mantenimiento">En mantenimiento</option>
+            <option value="fuera de servicio">Fuera de servicio</option>
+        </select>
 
         <button type="submit">Registrar equipo</button>
-
     </form>     
 </div>
 
@@ -37,13 +56,14 @@
     <h2>Inventario de equipos</h2>
     <p>Aquí mostraremos los equipos registrados.</p>
     <div id="lista-equipos"></div>
-
 </section>
 
 <section>
     <h2>Publicación de prueba</h2>
     <p id="titulo-publicacion">Esperando datos...</p>
 </section>
+</div>
+
 
 <script src="script.js" ></script>
 

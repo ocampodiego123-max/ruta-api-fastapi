@@ -3,6 +3,7 @@ import psycopg
 from modelos import CrearEquipo, EquipoRespuesta, MensajeRespuesta, ActualizarEstado
 from servicios_equipos import registrar_equipo, obtener_equipo_servicios, listar_equipos_servicios, eliminar_equipo_servicios, actualizar_estado_servicios
 from configuracion import config
+from autenticacion import obtener_usuario_sesion
 
 
 def verificar_api_key(x_api_key: str  | None = Header(default=None)):
@@ -11,8 +12,7 @@ def verificar_api_key(x_api_key: str  | None = Header(default=None)):
         raise HTTPException(status_code=401, detail="API KEY invalida")
 
 
-router = APIRouter(dependencies=[Depends(verificar_api_key)])
-
+router = APIRouter(dependencies=[Depends(obtener_usuario_sesion)])
 
 
 @router.get("/equipos", response_model=list[EquipoRespuesta])
