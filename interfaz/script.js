@@ -3,58 +3,41 @@ const campoUsuario = document.getElementById("usuario");
 const campoContrasena = document.getElementById("contrasena");
 const seccionLogin = document.getElementById("seccion-login");
 const seccionInventario = document.getElementById("seccion-inventario");
+const mensajeLogin = document.getElementById("mensaje-login");
 
 
 seccionLogin.style.display = "block"
 seccionInventario.style.display = "none"
 
+formularioLogin.addEventListener("submit", function(event) {
+    event.preventDefault()
 
+    const usuario = campoUsuario.value
+    const contrasena = campoContrasena.value
 
-
-
-fetch("https://jsonplaceholder.typicode.com/posts/1")
+    fetch("https://ruta-api-fastapi.onrender.com/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify({
+        usuario: usuario,
+        contrasena: contrasena
+    })
+})
     .then(function(respuesta) {
-        return respuesta.json();
+        return respuesta.ok;
     })
-    .then(function(datos) {
-        const titulo = document.getElementById("titulo-publicacion");
-        titulo.textContent = datos.title;
+    .then(function(resultado) {
+        if (resultado) {
+            seccionLogin.style.display = "none";
+            seccionInventario.style.display = "block";
+        } else {
+            seccionLogin.style.display = "block";
+            seccionInventario.style.display = "none";
+            mensajeLogin.textContent = "Credenciales incorrectas"
+        }      
     })
-    .catch(function(error) {
-        console.log("Ocurrió un error:", error);
-    });
-
-
-
-
-
-function mostrarEquipos(equipos) {
-    // 1. Limpiar las tarjetas anteriores
-    listaEquipos.innerHTML = "";
-
-    // 2. Recorrer la lista de equipos
-    equipos.forEach(function(equipo) {
-        // 3. Crear la tarjeta
-        const tarjeta = document.createElement("div");
-        tarjeta.className = "equipo-item";
-
-        // 4. Crear el título con el nombre
-        const titulo = document.createElement("h3");
-        titulo.textContent = equipo.nombre;
-
-        // 5. Crear el párrafo con el tipo
-        const textoTipo = document.createElement("p");
-        textoTipo.textContent = `Tipo: ${equipo.tipo}`;
-
-        // 6. Crear el párrafo con el estado
-        const textoEstado = document.createElement("p");
-        textoEstado.textContent = `Estado: ${equipo.estado}`;
-
-        // 7. Añadir la información a la tarjeta
-        tarjeta.appendChild(titulo);
-        tarjeta.appendChild(textoTipo);
-        tarjeta.appendChild(textoEstado);
-
-        // 8. Añadir la tarjeta al inventario
-        listaEquipos.appendChild(tarjeta);
-    });
+    .catch(function(error){
+        console.log(error);
+    })
+});
