@@ -67,3 +67,13 @@ def cerrar_sesion(request: Request):
 
     return {"mensaje": "Sesión cerrada correctamente"}
 
+
+
+@router_auth.get("/sesion")
+def validar_sesion(request: Request):
+
+    return obtener_usuario_sesion(request)
+    
+
+
+

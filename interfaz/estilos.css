@@ -13,6 +13,8 @@ body{
 input{
     padding: 8px;
     margin-bottom: 12px;
+    border: 1px solid #d1d5db;;
+    border-radius: 8px;
 }
 
 select{
@@ -25,7 +27,7 @@ button{
     color: white;
     padding: 10px;
     border: none;
-    
+    border-radius: 8px;
 }
 
 button:active {
@@ -58,5 +60,10 @@ section{
     padding: 15px;
     margin-top: 10px;
     border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+select {
+    border: 1px solid #d1d5db;;
     border-radius: 8px;
 }
