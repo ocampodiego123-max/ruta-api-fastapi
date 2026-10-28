@@ -87,7 +87,7 @@ function cargarEquipos(){
     if (resultado.length > 0){
             resultado.forEach(function(equipo){
                 listaEquipos.innerHTML += `
-                <div>
+                <div class="tarjeta-equipo">
                     <p>Nombre: ${equipo.nombre} </p>
                     <p>Tipo: ${equipo.tipo} </p>
                     <p>Estado: ${equipo.estado} </p>
@@ -97,11 +97,37 @@ function cargarEquipos(){
                     <option value="en mantenimiento"> En mantenimiento </option>
                     <option value="fuera de servicio"> Fuera de servicio </option>
                     </select>
-
+                    <div class="acciones-equipo">
                     <button type= "button" id="actualizar-${equipo.id}"> Actualizar estado </button>
+                    <button class="boton-eliminar" type= "button" id="eliminar-${equipo.id}"> Eliminar equipo </button>
+                    </div>
                 </div>`;
             });
             resultado.forEach(function(equipo){
+                const eliminarEquipo = document.getElementById(`eliminar-${equipo.id}`);
+
+                eliminarEquipo.addEventListener("click", function(){
+                    
+                fetch(`https://ruta-api-fastapi.onrender.com/equipos/${equipo.id}`, {
+                method: "DELETE",
+                credentials: "include",
+                })
+                .then(function(respuesta) {
+                return respuesta.ok;
+                })
+                .then(function(resultado){
+                    if (resultado){
+                        cargarEquipos()
+                    } else {
+                        mensajeInventario.textContent ="Error al eliminar equipo"
+                    }
+                })
+                .catch(function(error){
+                    console.log(error);
+                    mensajeInventario.textContent = "Error de conexión durante la eliminación"
+                });
+            });
+
                 const actualizarEstado = document.getElementById(`actualizar-${equipo.id}`);
 
                 actualizarEstado.addEventListener("click", function(){
@@ -132,7 +158,7 @@ function cargarEquipos(){
                     mensajeInventario.textContent = "Error de conexión durante la actualización"
                 })
             });
-            });
+        });
     } else {
         listaEquipos.innerHTML += `No hay equipos registrados`
     }
@@ -142,7 +168,6 @@ function cargarEquipos(){
     mensajeInventario.textContent = "No se pudo conectar con el servidor"
 });
 }
-
 
 
 formularioEquipo.addEventListener("submit", function(event) {
@@ -203,6 +228,3 @@ cerrarSesion.addEventListener("click", function() {
     }
 });
 });
-
-
-

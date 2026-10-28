@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="estilos.css">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de equipos</title>
 </head>
 
@@ -21,7 +22,7 @@
         <label for="contrasena">Contraseña</label>
         <input type="password" id="contrasena" required>
 
-        <button type="submit">Iniciar Sesion</button>
+        <button id="boton-iniciar-sesion" type="submit">Iniciar Sesion</button>
 
         <p id="mensaje-login"></p>
     </form>
@@ -51,12 +52,11 @@
 
 
 <section>
-    <p id="mensaje-inventario"></p>
-    <div id="seccion-logout">
-    <button type="button" id="boton-logout">Cerrar Sesión</button>
-    </div>
     <h2>Inventario de equipos</h2>
     <div id="lista-equipos"></div>
+    <div id="seccion-logout">
+    <button type="button" id="boton-logout">Cerrar Sesión</button>
+</div>
 </section>
 
 <script src="script.js" ></script>

@@ -2,24 +2,45 @@ h1 {
     color: blue;
     font-family: Arial, sans-serif;
     margin-bottom: 20px;
+    text-align: center;
+
+}
+
+h2 {
+    color: blue;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 body{
     background-color: #f4f6f8;
     font-family: Arial, sans-serif;
-    margin: 30px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-input{
+select {
     padding: 8px;
     margin-bottom: 12px;
-    border: 1px solid #d1d5db;;
     border-radius: 8px;
+    border: 1px solid #d1d5db;
 }
 
-select{
+input {
     padding: 8px;
     margin-bottom: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+section {
+    margin-top: 24px;
 }
 
 button{
@@ -28,15 +49,16 @@ button{
     padding: 10px;
     border: none;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 button:active {
-  background-color: #2980b9;
   transform: scale(0.95); 
 }
 
 button:hover{
     background-color: #1d4ed8;
+    cursor: pointer;
 }
 
 label{
@@ -49,21 +71,148 @@ label{
     padding: 20px;
     border-radius: 16px;
     border: 1px solid #d1d5db;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-section{
-    margin-top: 24px;
-}
 
-.equipo-item {
-    background-color: white;
-    padding: 15px;
-    margin-top: 10px;
+.formulario-equipo input {
+    padding: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
     border: 1px solid #d1d5db;
     border-radius: 8px;
 }
 
-select {
-    border: 1px solid #d1d5db;;
+.formulario-equipo select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.formulario-equipo button {
+    width: 100%;
+}
+
+.tarjeta-equipo {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    background-color: white;
+    padding: 10px;
+    margin-top: 10px auto 0;
+    border-radius: 16px;
+    border: 1px solid #d1d5db;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.boton-eliminar {
+    background-color: #ff2c2c;
+    color: white;
+    padding: 10px;
+    border: none;
     border-radius: 8px;
+    cursor: pointer;
+}
+
+.boton-eliminar:active {
+    background-color: #b91c1c;
+}
+
+.boton-eliminar:hover {
+    background-color: #d71818;
+}
+
+#seccion-logout {
+    margin-bottom: 24px;
+}
+
+#boton-logout {
+    width: 100%;
+    background-color: #ff2c2c;
+    margin-top: 20px;
+    margin-bottom: 24px;
+}
+
+#boton-logout:active {
+    background-color: #b91c1c;
+}
+
+#boton-logout:hover {
+    background-color: #d71818;
+}
+
+#seccion-login {
+    margin-bottom: 24px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #d1d5db;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-top: 0;
+}
+
+#boton-iniciar-sesion {
+    width: 100%;
+}
+
+.acciones-equipo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+
+@media (max-width: 600px) {
+    .tarjeta-equipo {
+        padding: 10px;
+    }
+    .boton-eliminar {
+        padding: 12px;
+    }
+
+    body {
+        margin: 0;
+        padding: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .acciones-equipo {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .acciones-equipo button {
+        width: 100%;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+    input:focus,
+    select:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+    }
+    .tarjeta-equipo p {
+        line-height: 1.5;
+    }
 }
