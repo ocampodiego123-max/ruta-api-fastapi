@@ -64,6 +64,7 @@ fetch("https://ruta-api-fastapi.onrender.com/sesion", {
     if (resultado) {
         seccionLogin.style.display = "none";
         seccionInventario.style.display = "block";
+        cargarEquipos();
     } else {
         seccionLogin.style.display = "block";
         seccionInventario.style.display = "none";
