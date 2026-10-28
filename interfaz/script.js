@@ -196,6 +196,7 @@ formularioEquipo.addEventListener("submit", function(event) {
             alert("Equipo registrado correctamente");
             cargarEquipos()
             mensajeInventario.textContent = "";
+            formularioEquipo.reset();
         } else {
             alert("Ocurrió un error al registrar equipo");
         }
